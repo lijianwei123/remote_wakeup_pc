@@ -16,14 +16,16 @@ from cherrypy import request
 
 
 class Wakeup(object):
+    @cherrypy.expose
     def index(self):
         return '/do?mac=mac_addr'
     '''
     url /do
     '''
     @cherrypy.expose
-    def do(self):
-        self.mac = request.params['mac']
+    def do(self, **kwargs):
+	params = kwargs
+	self.mac = params.get('mac')
         self.wake()
         return 'success'
     def wake(self):
