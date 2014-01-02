@@ -9,3 +9,5 @@
 
 附： 如果路由器支持绑定花生壳，那么就可以通过域名发出magic packet
 
+app功能请移步 https://github.com/lijianwei123/phone_close_pc
+
