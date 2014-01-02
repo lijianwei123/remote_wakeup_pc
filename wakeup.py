@@ -56,7 +56,7 @@ class Wakeup(object):
             s.sendto(msg, ('255.255.255.255', 9000))
             s.close()
             return True
-        except e:
+        except:
             print sys.exc_info()
             return False
         
