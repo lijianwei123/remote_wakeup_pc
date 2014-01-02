@@ -24,12 +24,12 @@ class Wakeup(object):
     '''
     @cherrypy.expose
     def do(self, **kwargs):
-	params = kwargs
-	self.mac = params.get('mac')
-    if self.wake():
-        return 'success'
-    else:
-	    return 'error'
+    	params = kwargs
+    	self.mac = params.get('mac')
+        if (self.wake()):
+            return 'success'
+        else:
+    	    return 'error'
     def wake(self):
         '''
                             远程唤醒主机干活
