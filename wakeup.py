@@ -16,13 +16,16 @@ from cherrypy import request
 
 
 class Wakeup(object):
+    def index(self):
+        return '/do?mac=mac_addr'
     '''
-    url /wakeup
+    url /do
     '''
     @cherrypy.expose
     def do(self):
         self.mac = request.params['mac']
         self.wake()
+        return 'success'
     def wake(self):
         '''
                             远程唤醒主机干活
@@ -48,6 +51,7 @@ class Wakeup(object):
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         s.sendto(msg, ('255.255.255.255', 9000))
         s.close()
+    
 def test():
     settings = { 
             'global': {
