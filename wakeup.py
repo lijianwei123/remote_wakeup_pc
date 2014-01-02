@@ -49,10 +49,25 @@ class Wakeup(object):
         s.sendto(msg, ('255.255.255.255', 9000))
         s.close()
 def test():
+    settings = { 
+            'global': {
+                'server.socket_port' : 30051,
+                'server.socket_host': '0.0.0.0',
+                'server.socket_file': '',
+                'server.socket_queue_size': 100,
+                'server.protocol_version': 'HTTP/1.1',
+                'server.log_to_screen': True,
+                'server.log_file': '',
+                'server.reverse_dns': False,
+                'server.thread_pool': 200,
+                'server.environment': 'production',
+                'engine.timeout_monitor.on': False
+            }
+    }
     cherrypy.engine.autoreload.stop()
     cherrypy.engine.autoreload.unsubscribe()
     
-    cherrypy.config.update(self.settings)
+    cherrypy.config.update(settings)
     cherrypy.tree.mount(Wakeup(), '/')
     cherrypy.engine.start()
         
