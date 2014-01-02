@@ -26,9 +26,9 @@ class Wakeup(object):
     def do(self, **kwargs):
 	params = kwargs
 	self.mac = params.get('mac')
-        if self.wake():
-       	    return 'success'
-	else:
+    if self.wake():
+        return 'success'
+    else:
 	    return 'error'
     def wake(self):
         '''
@@ -38,23 +38,28 @@ class Wakeup(object):
           @see http://blog.csdn.net/catxl313/article/details/5218598
         '''
         
+        try:
+            addr_byte = self.mac.split(':')
+            #组包
+            hw_addr = struct.pack('bbbbbb', int(addr_byte[0], 16), \
+                                  int(addr_byte[1], 16),\
+                                  int(addr_byte[2], 16),\
+                                  int(addr_byte[3], 16),\
+                                  int(addr_byte[4], 16),\
+                                  int(addr_byte[5], 16),\
+                                  ) 
+            msg = '\xff'*6 + hw_addr * 16
+            
+            #发送udp广播包
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            s.sendto(msg, ('255.255.255.255', 9000))
+            s.close()
+            return True
+        except e:
+            print sys.exc_info()
+            return False
         
-        addr_byte = self.mac.split(':')
-        #组包
-        hw_addr = struct.pack('bbbbbb', int(addr_byte[0], 16), \
-                              int(addr_byte[1], 16),\
-                              int(addr_byte[2], 16),\
-                              int(addr_byte[3], 16),\
-                              int(addr_byte[4], 16),\
-                              int(addr_byte[5], 16),\
-                              ) 
-        msg = '\xff'*6 + hw_addr * 16
-        
-        #发送udp广播包
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.sendto(msg, ('255.255.255.255', 9000))
-        s.close()
     
 def test():
     settings = { 
